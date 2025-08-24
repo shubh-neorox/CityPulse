@@ -1,0 +1,23 @@
+diff --git a/node_modules/react-native-screens/.DS_Store b/node_modules/react-native-screens/.DS_Store
+new file mode 100644
+index 0000000..36d39ae
+Binary files /dev/null and b/node_modules/react-native-screens/.DS_Store differ
+diff --git a/node_modules/react-native-screens/ios/.DS_Store b/node_modules/react-native-screens/ios/.DS_Store
+new file mode 100644
+index 0000000..30f1895
+Binary files /dev/null and b/node_modules/react-native-screens/ios/.DS_Store differ
+diff --git a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
+index 3a093ae..6cd2312 100644
+--- a/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
++++ b/node_modules/react-native-screens/ios/RNSScreenStackHeaderConfig.mm
+@@ -37,8 +37,8 @@
+ namespace react = facebook::react;
+ #endif // RCT_NEW_ARCH_ENABLED
+ 
+-static constexpr auto DEFAULT_TITLE_FONT_SIZE = @17;
+-static constexpr auto DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
++static const auto DEFAULT_TITLE_FONT_SIZE = @17;
++static const auto DEFAULT_TITLE_LARGE_FONT_SIZE = @34;
+ 
+ #if !defined(RCT_NEW_ARCH_ENABLED)
+ // Some RN private method hacking below. Couldn't figure out better way to access image data

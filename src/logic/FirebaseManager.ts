@@ -95,6 +95,32 @@ class FirebaseManager {
       return { success: false, error: error.message };
     }
   }
+
+  // Test Firebase connection
+  async testFirebaseConnection() {
+    try {
+      // Test Firestore connection by writing and reading a test document
+      const testDocRef = this.firestore.collection('test').doc('connection');
+      await testDocRef.set({ 
+        timestamp: new Date().toISOString(),
+        platform: 'mobile',
+        test: true 
+      });
+      
+      const testDoc = await testDocRef.get();
+      
+      if (testDoc.exists()) {
+        // Clean up test document
+        await testDocRef.delete();
+        return { success: true, message: 'Firebase connection successful' };
+      } else {
+        return { success: false, error: 'Failed to read test document' };
+      }
+    } catch (error: any) {
+      console.error('Firebase connection test failed:', error);
+      return { success: false, error: error.message };
+    }
+  }
 }
 
 export default new FirebaseManager();

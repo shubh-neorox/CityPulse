@@ -41,24 +41,10 @@ export default function HomeScreen() {
 
   useEffect(() => {
     loadFavorites();
-    testAPIConnection();
     searchEvents();
   }, []);
 
-  const testAPIConnection = async () => {
-    console.log('Testing Ticketmaster API connection...');
-    const result = await TicketmasterAPI.testAPIKey();
-    if (result.success) {
-      console.log('  API connection successful');
-    } else {
-      console.error('   API connection failed:', result.error);
-      Alert.alert(
-        'API Connection Issue',
-        `Unable to connect to Ticketmaster API. Status: ${result.status}\n\nPlease check your internet connection and try again.`,
-        [{ text: 'OK' }]
-      );
-    }
-  };
+
 
   const loadFavorites = async () => {
     const favoriteEvents = await LocalStorageManager.getFavoriteEvents();

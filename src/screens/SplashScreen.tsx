@@ -5,6 +5,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FirebaseManager from '../logic/FirebaseManager';
+import { validateBiometric, checkBiometricType } from '../utils/BiometricUtils';
 
 const { width, height } = Dimensions.get('window');
 
@@ -105,19 +106,14 @@ export default function SplashScreen() {
       console.log('Biometric enabled:', biometricEnabled);
       console.log('Last user exists:', !!lastUser);
 
-      // Check biometric availability with timeout
+      // Check biometric availability with safer error handling
       let biometricAvailable = false;
       try {
-        const rnBiometrics = new ReactNativeBiometrics();
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Biometric check timeout')), 2000)
-        );
-        const biometricPromise = rnBiometrics.isSensorAvailable();
-        
-        const { available } = await Promise.race([biometricPromise, timeoutPromise]) as any;
-        biometricAvailable = available;
+        const biometricInfo = await checkBiometricType();
+        biometricAvailable = biometricInfo.type !== null;
+        console.log('Biometric check result:', biometricInfo);
       } catch (biometricError) {
-        console.log('Biometric check failed:', biometricError);
+        console.log('Biometric check failed (safe fallback):', biometricError);
         biometricAvailable = false;
       }
       
@@ -128,27 +124,41 @@ export default function SplashScreen() {
         console.log('Showing biometric option...');
         setShowBiometricOption(true);
         
-        // Auto-trigger biometric prompt after showing option
+        // Auto-trigger biometric prompt with improved error handling
         setTimeout(async () => {
           try {
             console.log('Auto-triggering biometric prompt...');
-            const rnBiometrics = new ReactNativeBiometrics();
-            const { success } = await rnBiometrics.simplePrompt({
-              promptMessage: 'Use your biometric to access City Pulse',
-              fallbackPromptMessage: 'Use passcode',
-            });
+            
+            const success = await validateBiometric(setIsAuthenticated, false);
             
             if (success) {
               console.log('Biometric authentication successful');
-              setIsAuthenticated(true);
               navigation.navigate('Home' as never);
             } else {
               console.log('Biometric authentication cancelled/failed');
+              // Don't navigate immediately, let user try again or use password
+              setTimeout(() => {
+                if (!isAuthenticated) {
+                  navigation.navigate('Login' as never);
+                }
+              }, 2000);
+            }
+          } catch (error: any) {
+            console.log('Auto biometric error:', error);
+            
+            // Check if it's a user cancellation vs system error
+            if (error?.message && error.message.includes('UserCancel')) {
+              console.log('User cancelled biometric');
+              // Give user another chance
+              setTimeout(() => {
+                if (!isAuthenticated) {
+                  navigation.navigate('Login' as never);
+                }
+              }, 2000);
+            } else {
+              console.log('Biometric system error, fallback to login');
               navigation.navigate('Login' as never);
             }
-          } catch (error) {
-            console.log('Auto biometric error:', error);
-            navigation.navigate('Login' as never);
           }
         }, 1500);
       } else {
@@ -156,11 +166,11 @@ export default function SplashScreen() {
         console.log('Navigating to login...');
         setTimeout(() => {
           navigation.navigate('Login' as never);
-        }, 1500); // Reduced delay
+        }, 1500);
       }
     } catch (error) {
-      console.log('Session check error:', error);
-      // Immediate fallback to login screen on error
+      console.log('Session check error (safe fallback):', error);
+      // Immediate fallback to login screen on any error
       setTimeout(() => {
         navigation.navigate('Login' as never);
       }, 500);
@@ -169,28 +179,32 @@ export default function SplashScreen() {
 
   const handleBiometricLogin = async () => {
     try {
-      const rnBiometrics = new ReactNativeBiometrics();
-      const { success } = await rnBiometrics.simplePrompt({
-        promptMessage: 'Use your biometric to access City Pulse',
-        fallbackPromptMessage: 'Use passcode',
-      });
+      console.log('Manual biometric login triggered');
+      
+      const success = await validateBiometric(setIsAuthenticated, false);
       
       if (success) {
-        setIsAuthenticated(true);
         // Navigate directly to Home
         navigation.navigate('Home' as never);
       } else {
         // User cancelled or failed, go to login
         navigation.navigate('Login' as never);
       }
-    } catch (error) {
-      console.log('Biometric login error:', error);
-      Alert.alert('Error', 'Biometric authentication failed. Please try again.');
-      navigation.navigate('Login' as never);
+    } catch (error: any) {
+      console.log('Manual biometric login error:', error);
+      
+      if (error?.message && error.message.includes('UserCancel')) {
+        console.log('User cancelled manual biometric');
+        // Stay on splash screen, user can try again
+      } else if (error?.message && error.message.includes('timeout')) {
+        console.log('Biometric prompt timeout');
+        Alert.alert('Timeout', 'Biometric authentication timed out. Please try again.');
+      } else {
+        Alert.alert('Error', 'Biometric authentication failed. Please try again.');
+        navigation.navigate('Login' as never);
+      }
     }
-  };
-
-  const handleSkipBiometric = () => {
+  };  const handleSkipBiometric = () => {
     console.log('User skipped biometric login');
     navigation.navigate('Login' as never);
   };
