@@ -85,25 +85,6 @@ export default function LoginScreen() {
     }
   };
 
-  const handleBiometricLogin = async () => {
-    try {
-      const rnBiometrics = new ReactNativeBiometrics();
-      const { success } = await rnBiometrics.simplePrompt({
-        promptMessage: 'Authenticate to login to City Pulse',
-        fallbackPromptMessage: 'Use passcode',
-      });
-      
-      if (success) {
-        // Enable biometric for future logins
-        await AsyncStorage.setItem('biometric_enabled', 'true');
-        navigation.navigate('Home' as never);
-      }
-    } catch (error) {
-      console.log('Biometric login error:', error);
-      Alert.alert('Error', 'Biometric authentication failed. Please try again.');
-    }
-  };
-
   return (
     <KeyboardAvoidingView 
       style={styles.container} 
@@ -174,15 +155,6 @@ export default function LoginScreen() {
                   <Text style={styles.loginButtonText}>{t('login')}</Text>
                 )}
               </TouchableOpacity>
-
-              {biometricAvailable && (
-                <TouchableOpacity 
-                  style={styles.biometricButton} 
-                  onPress={handleBiometricLogin}
-                >
-                  <Text style={styles.biometricButtonText}>🔒 {t('biometricLogin')}</Text>
-                </TouchableOpacity>
-              )}
 
               <TouchableOpacity 
                 style={styles.signUpLink}

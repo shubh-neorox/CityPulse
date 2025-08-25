@@ -3099,6 +3099,34 @@ PODS:
     - SocketRocket
   - react-native-biometrics (3.0.1):
     - React-Core
+  - react-native-image-picker (8.2.1):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - react-native-maps (1.25.3):
     - react-native-maps/Maps (= 1.25.3)
   - react-native-maps/Generated (1.25.3):
@@ -3884,6 +3912,34 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
+  - RNPermissions (5.4.2):
+    - boost
+    - DoubleConversion
+    - fast_float
+    - fmt
+    - glog
+    - hermes-engine
+    - RCT-Folly
+    - RCT-Folly/Fabric
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - SocketRocket
+    - Yoga
   - RNReanimated (4.0.2):
     - boost
     - DoubleConversion
@@ -4195,6 +4251,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-biometrics (from `../node_modules/react-native-biometrics`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-maps/Google (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -4236,6 +4293,7 @@ DEPENDENCIES:
   - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -4353,6 +4411,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-biometrics:
     :path: "../node_modules/react-native-biometrics"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
@@ -4433,6 +4493,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -4507,6 +4569,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: ed316571f8a6368a044c166dd62db3ff9a19ade9
   React-microtasksnativemodule: 7349a9210ff1fe97f54025fbda2496ed9a2d43cd
   react-native-biometrics: 43ed5b828646a7862dbc7945556446be00798e7d
+  react-native-image-picker: 6051cfd030121b880a58f1cc0e5e33e9887804e4
   react-native-maps: 036282c9bb3fafa901e49b1a8973d5ab04fb31b7
   react-native-safe-area-context: ee1e8e2a7abf737a8d4d9d1a5686a7f2e7466236
   React-NativeModulesApple: 9c2ece8c6e423b2a13c9c50d2ed25953379cbe4e
@@ -4548,6 +4611,7 @@ SPEC CHECKSUMS:
   RNFBStorage: a506abbce782b062d93b6b5f310ab70cb9033722
   RNGestureHandler: b8d2e75c2e88fc2a1f6be3b3beeeed80b88fa37d
   RNLocalize: d8ccb568b40c72c767714db3808ce66a1ecf444a
+  RNPermissions: e0bc78e0e1ebffe0363719d1a1171ea467a900b8
   RNReanimated: 614345d319aaf706e61a8984472b370919daadec
   RNScreens: 13b83fa73c1bee87369ff0daa03ca357be90e571
   RNVectorIcons: e355dd0998d6b9020e560922a66614eb9636501b
@@ -4555,6 +4619,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: be78ddad0c56d06a5e41eaef4bfbbd49b86a4d07
 
-PODFILE CHECKSUM: 112101e625789a80493aa8ba677c06180ba54bb4
+PODFILE CHECKSUM: 35b77d04eaede2128269103143779a9064efec21
 
 COCOAPODS: 1.16.2

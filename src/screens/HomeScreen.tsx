@@ -17,9 +17,11 @@ import {
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from '../hooks/useTranslation';
 import TicketmasterAPI, { Event } from '../logic/TicketmasterAPI';
 import LocalStorageManager from '../logic/LocalStorageManager';
+import FirebaseManager from '../logic/FirebaseManager';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -31,6 +33,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   // Animation refs for header hide/show
   const headerHeight = 180 + insets.top; // Include safe area top
@@ -42,7 +45,26 @@ export default function HomeScreen() {
   useEffect(() => {
     loadFavorites();
     searchEvents();
+    loadProfilePicture();
   }, []);
+
+  // Refresh profile picture when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      loadProfilePicture();
+    }, [])
+  );
+
+  const loadProfilePicture = async () => {
+    try {
+      const result = await FirebaseManager.getUserProfile();
+      if (result.success && result.data && (result.data as any).profilePictureBase64) {
+        setProfilePicture(`data:image/jpeg;base64,${(result.data as any).profilePictureBase64}`);
+      }
+    } catch (error) {
+      console.log('No profile picture found');
+    }
+  };
 
 
 
@@ -234,7 +256,14 @@ export default function HomeScreen() {
               style={styles.profileButton}
               onPress={() => navigation.navigate('Profile' as never)}
             >
-              <Text style={styles.profileIcon}>👤</Text>
+              {profilePicture ? (
+                <Image 
+                  source={{ uri: profilePicture }} 
+                  style={styles.profileImage}
+                />
+              ) : (
+                <Text style={styles.profileIcon}>👤</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -355,6 +384,11 @@ const styles = StyleSheet.create({
   profileIcon: {
     fontSize: 18,
     color: '#00d4ff',
+  },
+  profileImage: {
+    width: 35,
+    height: 35,
+    borderRadius: 17.5,
   },
   searchContainer: {
     marginBottom: 10,

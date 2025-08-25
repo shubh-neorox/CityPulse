@@ -7,11 +7,13 @@ const rnBiometrics = new ReactNativeBiometrics();
 // Get BiometricsModule if available (for Android)
 const { BiometricsModule } = NativeModules;
 
-/**
- * Check and determine available biometric type (Face ID, Touch ID, or other biometrics).
- * Returns an object with the type and whether face recognition is available
- */
-export const checkBiometricType = async () => {
+export interface BiometryInfo {
+  type: string | null; // "Face ID", "Touch ID", "Biometrics", or null if unavailable
+  hasFaceRecognition: boolean;
+  hasFingerprint: boolean;
+}
+
+export const checkBiometricType = async (): Promise<BiometryInfo> => {
   try {
     // For Android, use our custom native module if available
     if (Platform.OS === 'android' && BiometricsModule) {

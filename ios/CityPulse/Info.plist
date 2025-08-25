@@ -37,6 +37,10 @@
 	<string>This app needs location access to show your current location on the map and find nearby events.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use Face ID to securely access your City Pulse account</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to camera to take profile pictures</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to photo library to select profile pictures</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
